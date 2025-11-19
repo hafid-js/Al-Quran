@@ -28,12 +28,12 @@ class DetailSurahView extends GetView<DetailSurahController> {
 
           final detailSurah = snapshot.data!;
 
-          return Column(
-            children: [
-              // HEADER
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Card(
+          return ListView.builder(
+            padding: EdgeInsets.all(20),
+            itemCount: detailSurah.ayat.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -60,76 +60,68 @@ class DetailSurahView extends GetView<DetailSurahController> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        SizedBox(height: 20),
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              }
 
-              // LIST AYAT
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.all(20),
-                  itemCount: detailSurah.ayat.length,
-                  itemBuilder: (context, index) {
-                    final ayat = detailSurah.ayat[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CircleAvatar(child: Text('${ayat.nomorAyat}')),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.bookmark_add_outlined),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.play_arrow),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+              final ayat = detailSurah.ayat[index - 1];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 10,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvatar(child: Text('${ayat.nomorAyat}')),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.bookmark_add_outlined),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.play_arrow),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          ayat.teksArab,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(fontSize: 25),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          ayat.teksLatin,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                         SizedBox(height: 25),
-                        Text(
-                          ayat.teksIndonesia,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(height: 50),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    ayat.teksArab,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    ayat.teksLatin,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  Text(
+                    ayat.teksIndonesia,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 50),
+                ],
+              );
+            },
           );
         },
       ),

@@ -53,24 +53,24 @@ class DetailSurah {
   });
 
   factory DetailSurah.fromJson(Map<String, dynamic> json) => DetailSurah(
-        nomor: json["nomor"],
-        nama: json["nama"],
-        namaLatin: json["namaLatin"],
-        jumlahAyat: json["jumlahAyat"],
-        tempatTurun: json["tempatTurun"],
-        arti: json["arti"],
-        deskripsi: json["deskripsi"],
-        audioFull: Map<String, String>.from(json["audioFull"] ?? {}),
-        ayat: List<Ayat>.from(
-          (json["ayat"] as List).map((x) => Ayat.fromJson(x)),
-        ),
-        suratSelanjutnya: (json["suratSelanjutnya"] is Map<String, dynamic>)
-    ? SurahNav.fromJson(json["suratSelanjutnya"])
-    : null,
-suratSebelumnya: (json["suratSebelumnya"] is Map<String, dynamic>)
-    ? SurahNav.fromJson(json["suratSebelumnya"])
-    : null,
-      );
+    nomor: json["nomor"] ?? 0,
+    nama: json["nama"] ?? "",
+    namaLatin: json["namaLatin"] ?? "",
+    jumlahAyat: json["jumlahAyat"] ?? 0,
+    tempatTurun: json["tempatTurun"] ?? "",
+    arti: json["arti"] ?? "",
+    deskripsi: json["deskripsi"] ?? "",
+    audioFull: Map<String, String>.from(json["audioFull"] ?? {}),
+    ayat: (json["ayat"] != null)
+        ? List<Ayat>.from(json["ayat"].map((x) => Ayat.fromJson(x)))
+        : [],
+    suratSelanjutnya: (json["suratSelanjutnya"] is Map<String, dynamic>)
+        ? SurahNav.fromJson(json["suratSelanjutnya"])
+        : null,
+    suratSebelumnya: (json["suratSebelumnya"] is Map<String, dynamic>)
+        ? SurahNav.fromJson(json["suratSebelumnya"])
+        : null,
+  );
 }
 
 class Ayat {
@@ -89,12 +89,12 @@ class Ayat {
   });
 
   factory Ayat.fromJson(Map<String, dynamic> json) => Ayat(
-        nomorAyat: json["nomorAyat"],
-        teksArab: json["teksArab"],
-        teksLatin: json["teksLatin"],
-        teksIndonesia: json["teksIndonesia"],
-        audio: Map<String, String>.from(json["audio"] ?? {}),
-      );
+    nomorAyat: json["nomorAyat"],
+    teksArab: json["teksArab"],
+    teksLatin: json["teksLatin"],
+    teksIndonesia: json["teksIndonesia"],
+    audio: Map<String, String>.from(json["audio"] ?? {}),
+  );
 }
 
 class SurahNav {
@@ -111,9 +111,9 @@ class SurahNav {
   });
 
   factory SurahNav.fromJson(Map<String, dynamic> json) => SurahNav(
-        nomor: json["nomor"],
-        nama: json["nama"],
-        namaLatin: json["namaLatin"],
-        jumlahAyat: json["jumlahAyat"],
-      );
+    nomor: json["nomor"],
+    nama: json["nama"],
+    namaLatin: json["namaLatin"],
+    jumlahAyat: json["jumlahAyat"],
+  );
 }

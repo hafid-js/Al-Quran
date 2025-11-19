@@ -21,18 +21,16 @@ class QuranResponse {
   });
 
   factory QuranResponse.fromJson(Map<String, dynamic> json) => QuranResponse(
-        code: json["code"],
-        message: json["message"],
-        data: List<Surah>.from(
-          json["data"].map((x) => Surah.fromJson(x)),
-        ),
-      );
+    code: json["code"],
+    message: json["message"],
+    data: List<Surah>.from(json["data"].map((x) => Surah.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
-        "code": code,
-        "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
+    "code": code,
+    "message": message,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+  };
 }
 
 class Surah {
@@ -57,26 +55,28 @@ class Surah {
   });
 
   factory Surah.fromJson(Map<String, dynamic> json) => Surah(
-        nomor: json["nomor"],
-        nama: json["nama"],
-        namaLatin: json["namaLatin"],
-        jumlahAyat: json["jumlahAyat"],
-        tempatTurun: json["tempatTurun"],
-        arti: json["arti"],
-        deskripsi: json["deskripsi"],
-        audioFull: Map.from(json["audioFull"])
-            .map((k, v) => MapEntry<String, String>(k, v)),
-      );
+    nomor: json["nomor"] ?? 0,
+    nama: json["nama"] ?? "",
+    namaLatin: json["namaLatin"] ?? "",
+    jumlahAyat: json["jumlahAyat"] ?? 0,
+    tempatTurun: json["tempatTurun"] ?? "",
+    arti: json["arti"] ?? "",
+    deskripsi: json["deskripsi"] ?? "",
+    audioFull: json["audioFull"] != null
+        ? Map<String, String>.from(json["audioFull"])
+        : {},
+  );
 
   Map<String, dynamic> toJson() => {
-        "nomor": nomor,
-        "nama": nama,
-        "namaLatin": namaLatin,
-        "jumlahAyat": jumlahAyat,
-        "tempatTurun": tempatTurun,
-        "arti": arti,
-        "deskripsi": deskripsi,
-        "audioFull": Map.from(audioFull)
-            .map((k, v) => MapEntry<String, dynamic>(k, v)),
-      };
+    "nomor": nomor,
+    "nama": nama,
+    "namaLatin": namaLatin,
+    "jumlahAyat": jumlahAyat,
+    "tempatTurun": tempatTurun,
+    "arti": arti,
+    "deskripsi": deskripsi,
+    "audioFull": Map.from(
+      audioFull,
+    ).map((k, v) => MapEntry<String, dynamic>(k, v)),
+  };
 }
