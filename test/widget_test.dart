@@ -27,7 +27,7 @@ void main() async {
     return;
   }
 
-  SurahDetail annas = SurahDetail.fromJson(dataAnnas);
+  DetailSurah annas = DetailSurah.fromJson(dataAnnas);
 
   print(annas.nama);
 

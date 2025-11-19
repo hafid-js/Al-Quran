@@ -3,29 +3,29 @@
 
 import 'dart:convert';
 
-SurahDetailResponse surahDetailResponseFromJson(String str) =>
-    SurahDetailResponse.fromJson(json.decode(str));
+DetailSurahResponse DetailSurahResponseFromJson(String str) =>
+    DetailSurahResponse.fromJson(json.decode(str));
 
-class SurahDetailResponse {
+class DetailSurahResponse {
   final int code;
   final String message;
-  final SurahDetail data;
+  final DetailSurah data;
 
-  SurahDetailResponse({
+  DetailSurahResponse({
     required this.code,
     required this.message,
     required this.data,
   });
 
-  factory SurahDetailResponse.fromJson(Map<String, dynamic> json) =>
-      SurahDetailResponse(
+  factory DetailSurahResponse.fromJson(Map<String, dynamic> json) =>
+      DetailSurahResponse(
         code: json["code"],
         message: json["message"],
-        data: SurahDetail.fromJson(json["data"]),
+        data: DetailSurah.fromJson(json["data"]),
       );
 }
 
-class SurahDetail {
+class DetailSurah {
   final int nomor;
   final String nama;
   final String namaLatin;
@@ -38,7 +38,7 @@ class SurahDetail {
   final SurahNav? suratSelanjutnya;
   final SurahNav? suratSebelumnya;
 
-  SurahDetail({
+  DetailSurah({
     required this.nomor,
     required this.nama,
     required this.namaLatin,
@@ -52,7 +52,7 @@ class SurahDetail {
     required this.suratSebelumnya,
   });
 
-  factory SurahDetail.fromJson(Map<String, dynamic> json) => SurahDetail(
+  factory DetailSurah.fromJson(Map<String, dynamic> json) => DetailSurah(
         nomor: json["nomor"],
         nama: json["nama"],
         namaLatin: json["namaLatin"],
