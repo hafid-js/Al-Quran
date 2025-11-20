@@ -107,7 +107,6 @@ class HomeView extends GetView<HomeController> {
               ),
               TabBar(
                 indicatorColor: appPurpleDark,
-                labelColor: Get.isDarkMode ? appWhite : appPurpleDark,
                 unselectedLabelColor: Colors.grey,
                 indicatorWeight: 1.0,
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -157,25 +156,36 @@ class HomeView extends GetView<HomeController> {
                                   arguments: surah,
                                 );
                               },
-                              
-                              leading: Container(
-                                height: 35,
-                                width: 35,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage("assets/images/list.png")),
+
+                              leading: Obx(
+                                () => Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        controller.isDark.isTrue
+                                            ? "assets/images/list.png"
+                                            : "assets/images/list.png",
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${surah.nomor}",
+                                      style: TextStyle(color: appPurpleDark),
+                                    ),
+                                  ),
                                 ),
-                                child: Center(child: Text("${surah.nomor}", style: TextStyle(color: appPurpleDark),)),
                               ),
-                              title: Text(
-  surah.namaLatin,
-  style: TextStyle(
-    color: Get.isDarkMode ? appWhite : appPurpleDark,
-  ),
-),
+                              title: Text(surah.namaLatin),
                               subtitle: Text(
                                 '${surah.jumlahAyat} Ayat | ${surah.tempatTurun}',
                               ),
-                              trailing: Text("${surah.nama}", style: TextStyle(color: Get.isDarkMode ? appWhite : appPurpleDark, fontSize: 15),),
+                              trailing: Text(
+                                "${surah.nama}",
+                                style: TextStyle(fontSize: 17),
+                              ),
                             );
                           },
                         );
@@ -203,12 +213,14 @@ class HomeView extends GetView<HomeController> {
                                   arguments: surah,
                                 );
                               },
-                              
+
                               leading: Container(
                                 height: 35,
                                 width: 35,
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage("assets/images/list.png")),
+                                  image: DecorationImage(
+                                    image: AssetImage("assets/images/list.png"),
+                                  ),
                                 ),
                                 child: Center(child: Text("${index + 1}")),
                               ),
@@ -223,6 +235,20 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.isDarkMode
+              ? Get.changeTheme(themeLight)
+              : Get.changeTheme(themeDark);
+          controller.isDark.toggle();
+        },
+        child: Obx(
+          () => Icon(
+            Icons.color_lens,
+            color: controller.isDark.isTrue ? appPurple : appWhite,
           ),
         ),
       ),

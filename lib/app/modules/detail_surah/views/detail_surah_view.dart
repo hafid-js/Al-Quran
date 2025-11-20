@@ -2,6 +2,7 @@ import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran/app/data/models/surah.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
 import '../controllers/detail_surah_controller.dart';
@@ -13,12 +14,15 @@ class DetailSurahView extends GetView<DetailSurahController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         leading: IconButton(
-    onPressed: () => Get.back(),
-    icon: Icon(Icons.arrow_back),
-    color: appWhite,
-  ),
-        title: Text('SURAH ${surah.namaLatin.toUpperCase()}', style: TextStyle(color: appWhite),),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back),
+          color: appWhite,
+        ),
+        title: Text(
+          'SURAH ${surah.namaLatin.toUpperCase()}',
+          style: TextStyle(color: appWhite),
+        ),
         centerTitle: true,
       ),
       body: FutureBuilder<detail.DetailSurah>(
@@ -39,45 +43,102 @@ class DetailSurahView extends GetView<DetailSurahController> {
             itemCount: detailSurah.ayat.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Text(
-                          detailSurah.namaLatin.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                return GestureDetector(
+                  onTap: () => Get.dialog(
+                    Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Get.isDarkMode
+                            ? appPurpleLight2.withValues(alpha: 0.3)
+                            : appWhite,
                         ),
-                        Text(
-                          "(${detailSurah.arti.toUpperCase()})",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Tafsir ${surah.namaLatin}",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 20),
+                            Html(
+                              data: detailSurah.deskripsi,
+                              style: {"*": Style(textAlign: TextAlign.justify)},
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          "${detailSurah.jumlahAyat} Ayat | ${detailSurah.tempatTurun}",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  // onTap: () => Get.defaultDialog(
+                  //   contentPadding: EdgeInsets.symmetric(
+                  //     horizontal: 30,
+                  //     vertical: 10,
+                  //   ),
+                  //   title: "Tafsir ${surah.namaLatin}",
+                  //   titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  //   content: Html(
+                  //     data: detailSurah.deskripsi,
+                  //     style: {"*": Style(textAlign: TextAlign.left)},
+                  //   ),
+                  // ),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: [appPurpleLight1, appPurpleDark],
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Text(
+                            detailSurah.namaLatin.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: appWhite,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                      ],
+                          Text(
+                            "(${detailSurah.arti.toUpperCase()})",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "${detailSurah.jumlahAyat} Ayat | ${detailSurah.tempatTurun}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
                 );
               }
-
               final ayat = detailSurah.ayat[index - 1];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Card(
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Get.isDarkMode ? appPurple : Colors.grey[200],
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
@@ -86,7 +147,21 @@ class DetailSurahView extends GetView<DetailSurahController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(child: Text('${ayat.nomorAyat}')),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/list.png"),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${ayat.nomorAyat}",
+                                style: TextStyle(color: appPurpleDark),
+                              ),
+                            ),
+                          ),
                           Row(
                             children: [
                               IconButton(
@@ -113,9 +188,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                   Text(
                     ayat.teksLatin,
                     textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18),
                   ),
                   SizedBox(height: 25),
                   Text(
