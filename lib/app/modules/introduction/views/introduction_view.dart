@@ -41,7 +41,7 @@ class IntroductionView extends GetView<IntroductionController> {
               child: Text(
                 "GET STARTED",
                 style: TextStyle(
-                  color: Get.isDarkMode ? appWhite : appWhite,
+                  color: Get.isDarkMode ? appPurpleDark : appWhite,
                 ),
               ),
                style: ElevatedButton.styleFrom(backgroundColor: Get.isDarkMode ? appWhite : appPurple, padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15)),

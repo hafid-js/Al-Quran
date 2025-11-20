@@ -107,7 +107,7 @@ class HomeView extends GetView<HomeController> {
               ),
               TabBar(
                 indicatorColor: appPurpleDark,
-                labelColor: appPurpleDark,
+                labelColor: Get.isDarkMode ? appWhite : appPurpleDark,
                 unselectedLabelColor: Colors.grey,
                 indicatorWeight: 1.0,
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -157,20 +157,67 @@ class HomeView extends GetView<HomeController> {
                                   arguments: surah,
                                 );
                               },
-                              leading: CircleAvatar(
-                                child: Text('${surah.nomor}'),
+                              
+                              leading: Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage("assets/images/list.png")),
+                                ),
+                                child: Center(child: Text("${surah.nomor}", style: TextStyle(color: appPurpleDark),)),
                               ),
-                              title: Text('${surah.namaLatin}'),
+                              title: Text(
+  surah.namaLatin,
+  style: TextStyle(
+    color: Get.isDarkMode ? appWhite : appPurpleDark,
+  ),
+),
                               subtitle: Text(
                                 '${surah.jumlahAyat} Ayat | ${surah.tempatTurun}',
                               ),
-                              trailing: Text("${surah.nama}"),
+                              trailing: Text("${surah.nama}", style: TextStyle(color: Get.isDarkMode ? appWhite : appPurpleDark, fontSize: 15),),
                             );
                           },
                         );
                       },
                     ),
-                    Center(child: Text("page 2")),
+                    FutureBuilder<List<Surah>>(
+                      future: controller.getAllSurah(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        if (snapshot.data == null || snapshot.data!.isEmpty) {
+                          return Center(child: Text('Tidak ada data'));
+                        }
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            Surah surah = snapshot.data![index];
+                            return ListTile(
+                              onTap: () {
+                                Get.toNamed(
+                                  Routes.DETAIL_SURAH,
+                                  arguments: surah,
+                                );
+                              },
+                              
+                              leading: Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage("assets/images/list.png")),
+                                ),
+                                child: Center(child: Text("${index + 1}")),
+                              ),
+                              title: Text('Juz ${index + 1}'),
+                            );
+                          },
+                        );
+                      },
+                    ),
                     Center(child: Text("page 3")),
                   ],
                 ),
