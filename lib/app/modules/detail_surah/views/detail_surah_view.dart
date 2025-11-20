@@ -47,15 +47,15 @@ class DetailSurahView extends GetView<DetailSurahController> {
                   onTap: () => Get.dialog(
                     Dialog(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Container(
                         padding: EdgeInsets.all(25),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Get.isDarkMode
-                            ? appPurpleLight2.withValues(alpha: 0.3)
-                            : appWhite,
+                              ? appPurpleLight2.withValues(alpha: 0.3)
+                              : appWhite,
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                               "Tafsir ${surah.namaLatin}",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Html(
                               data: detailSurah.deskripsi,
                               style: {"*": Style(textAlign: TextAlign.justify)},

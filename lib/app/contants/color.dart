@@ -13,10 +13,10 @@ ThemeData themeLight = ThemeData(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: appPurpleDark,
   ),
-  primaryColor: appPurple,
+  primaryColor: appPurpleDark,
   scaffoldBackgroundColor: appWhite,
   appBarTheme: AppBarTheme(
-    backgroundColor: appPurple,
+    backgroundColor: appPurpleDark,
   ),
   textTheme: TextTheme(
     bodyLarge: TextStyle(color: appPurpleDark),

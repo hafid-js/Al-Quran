@@ -1,30 +1,5 @@
 // API URL : https://equran.id/api/v2/surat/1
 // GET detail surah berdasarkan nomornya
-
-import 'dart:convert';
-
-DetailSurahResponse DetailSurahResponseFromJson(String str) =>
-    DetailSurahResponse.fromJson(json.decode(str));
-
-class DetailSurahResponse {
-  final int code;
-  final String message;
-  final DetailSurah data;
-
-  DetailSurahResponse({
-    required this.code,
-    required this.message,
-    required this.data,
-  });
-
-  factory DetailSurahResponse.fromJson(Map<String, dynamic> json) =>
-      DetailSurahResponse(
-        code: json["code"],
-        message: json["message"],
-        data: DetailSurah.fromJson(json["data"]),
-      );
-}
-
 class DetailSurah {
   final int nomor;
   final String nama;

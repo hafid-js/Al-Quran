@@ -9,6 +9,10 @@ void main() {
   runApp(
     GetMaterialApp(
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: appPurpleDark,
+          foregroundColor: appWhite,
+        ),
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),

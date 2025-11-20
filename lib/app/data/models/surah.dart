@@ -2,36 +2,6 @@
 
 // GET semua surah dalam alquran
 
-import 'dart:convert';
-
-QuranResponse quranResponseFromJson(String str) =>
-    QuranResponse.fromJson(json.decode(str));
-
-String quranResponseToJson(QuranResponse data) => json.encode(data.toJson());
-
-class QuranResponse {
-  int code;
-  String message;
-  List<Surah> data;
-
-  QuranResponse({
-    required this.code,
-    required this.message,
-    required this.data,
-  });
-
-  factory QuranResponse.fromJson(Map<String, dynamic> json) => QuranResponse(
-    code: json["code"],
-    message: json["message"],
-    data: List<Surah>.from(json["data"].map((x) => Surah.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "message": message,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
-}
 
 class Surah {
   int nomor;

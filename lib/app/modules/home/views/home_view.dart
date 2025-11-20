@@ -1,4 +1,5 @@
 import 'package:alquran/app/contants/color.dart';
+import 'package:alquran/app/data/models/juz.dart' hide Surah;
 import 'package:alquran/app/data/models/surah.dart';
 import 'package:alquran/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -191,8 +192,8 @@ class HomeView extends GetView<HomeController> {
                         );
                       },
                     ),
-                    FutureBuilder<List<Surah>>(
-                      future: controller.getAllSurah(),
+                    FutureBuilder<List<Juz>>(
+                      future: controller.getAllJuz(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -205,26 +206,64 @@ class HomeView extends GetView<HomeController> {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            Surah surah = snapshot.data![index];
+                            Juz detailJuz = snapshot.data![index];
+                            final keys = detailJuz.surahs!.items.keys.toList()
+                              ..sort();
+
+                            final ayatList = detailJuz.ayahs!;
+                            final surahItems = detailJuz.surahs!.items;
+
+                            final firstSurah = int.parse(keys.first);
+                            final lastSurah = int.parse(keys.last);
+
+                            final firstAyah = ayatList.firstWhere(
+                              (a) => a.surah!.number == firstSurah,
+                            );
+                            final lastAyah = ayatList.lastWhere(
+                              (a) => a.surah!.number == lastSurah,
+                            );
                             return ListTile(
                               onTap: () {
                                 Get.toNamed(
-                                  Routes.DETAIL_SURAH,
-                                  arguments: surah,
+                                  Routes.DETAIL_JUZ,
+                                  arguments: detailJuz,
                                 );
                               },
-
-                              leading: Container(
-                                height: 35,
-                                width: 35,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage("assets/images/list.png"),
+                              leading: Obx(
+                                () => Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        controller.isDark.isTrue
+                                            ? "assets/images/list.png"
+                                            : "assets/images/list.png",
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${index + 1}",
+                                      style: TextStyle(color: appPurpleDark),
+                                    ),
                                   ),
                                 ),
-                                child: Center(child: Text("${index + 1}")),
                               ),
-                              title: Text('Juz ${index + 1}'),
+                              title: Text("Juz ${index + 1}"),
+                              isThreeLine: true,
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "Mulai Dari ${detailJuz.surahs!.items[keys.first]!.englishName} '-' ${firstAyah.numberInSurah} ",
+                                  ),
+                                  Text(
+                                    "Sampai ${detailJuz.surahs!.items[keys.last]!.englishName} '-' ${lastAyah.numberInSurah}",
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         );
@@ -248,7 +287,7 @@ class HomeView extends GetView<HomeController> {
         child: Obx(
           () => Icon(
             Icons.color_lens,
-            color: controller.isDark.isTrue ? appPurple : appWhite,
+            color: controller.isDark.isTrue ? appPurpleDark : appWhite,
           ),
         ),
       ),
