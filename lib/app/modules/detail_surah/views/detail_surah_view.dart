@@ -1,3 +1,4 @@
+import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran/app/data/models/surah.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,12 @@ class DetailSurahView extends GetView<DetailSurahController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SURAH ${surah.namaLatin.toUpperCase()}'),
+         leading: IconButton(
+    onPressed: () => Get.back(),
+    icon: Icon(Icons.arrow_back),
+    color: appWhite,
+  ),
+        title: Text('SURAH ${surah.namaLatin.toUpperCase()}', style: TextStyle(color: appWhite),),
         centerTitle: true,
       ),
       body: FutureBuilder<detail.DetailSurah>(
@@ -109,7 +115,6 @@ class DetailSurahView extends GetView<DetailSurahController> {
                     textAlign: TextAlign.end,
                     style: TextStyle(
                       fontSize: 18,
-                      fontStyle: FontStyle.italic,
                     ),
                   ),
                   SizedBox(height: 25),
