@@ -211,7 +211,6 @@ class HomeView extends GetView<HomeController> {
                               ..sort();
 
                             final ayatList = detailJuz.ayahs!;
-                            final surahItems = detailJuz.surahs!.items;
 
                             final firstSurah = int.parse(keys.first);
                             final lastSurah = int.parse(keys.last);
@@ -222,11 +221,12 @@ class HomeView extends GetView<HomeController> {
                             final lastAyah = ayatList.lastWhere(
                               (a) => a.surah!.number == lastSurah,
                             );
+                            
                             return ListTile(
                               onTap: () {
                                 Get.toNamed(
                                   Routes.DETAIL_JUZ,
-                                  arguments: detailJuz,
+                                  arguments: detailJuz.number,
                                 );
                               },
                               leading: Obx(
@@ -257,10 +257,10 @@ class HomeView extends GetView<HomeController> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "Mulai Dari ${detailJuz.surahs!.items[keys.first]!.englishName} '-' ${firstAyah.numberInSurah} ",
+                                    "Mulai Dari ${detailJuz.surahs!.items[keys.first]!.englishName} - ${firstAyah.numberInSurah} ",
                                   ),
                                   Text(
-                                    "Sampai ${detailJuz.surahs!.items[keys.last]!.englishName} '-' ${lastAyah.numberInSurah}",
+                                    "Sampai ${detailJuz.surahs!.items[keys.last]!.englishName} - ${lastAyah.numberInSurah}",
                                   ),
                                 ],
                               ),

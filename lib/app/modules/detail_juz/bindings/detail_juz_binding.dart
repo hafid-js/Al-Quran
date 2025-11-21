@@ -1,12 +1,10 @@
+import 'package:alquran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:get/get.dart';
-
-import '../controllers/detail_juz_controller.dart';
 
 class DetailJuzBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<DetailJuzController>(
-      () => DetailJuzController(),
-    );
+    Get.lazyPut<DetailSurahController>(() => DetailSurahController());
   }
 }
+

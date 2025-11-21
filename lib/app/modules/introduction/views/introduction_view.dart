@@ -39,7 +39,7 @@ class IntroductionView extends GetView<IntroductionController> {
             ElevatedButton(
               onPressed: () => Get.offAllNamed(Routes.HOME),
               child: Text(
-                "GET STARTED",
+                "MULAI",
                 style: TextStyle(
                   color: Get.isDarkMode ? appPurpleDark : appWhite,
                 ),

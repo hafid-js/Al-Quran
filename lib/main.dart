@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   runApp(
     GetMaterialApp(
       theme: ThemeData(

@@ -74,18 +74,6 @@ class DetailSurahView extends GetView<DetailSurahController> {
                       ),
                     ),
                   ),
-                  // onTap: () => Get.defaultDialog(
-                  //   contentPadding: EdgeInsets.symmetric(
-                  //     horizontal: 30,
-                  //     vertical: 10,
-                  //   ),
-                  //   title: "Tafsir ${surah.namaLatin}",
-                  //   titleStyle: const TextStyle(fontWeight: FontWeight.bold),
-                  //   content: Html(
-                  //     data: detailSurah.deskripsi,
-                  //     style: {"*": Style(textAlign: TextAlign.left)},
-                  //   ),
-                  // ),
                   child: Container(
                     margin: EdgeInsets.only(bottom: 15),
                     decoration: BoxDecoration(
