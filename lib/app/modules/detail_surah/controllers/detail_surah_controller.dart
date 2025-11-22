@@ -8,6 +8,8 @@ import 'package:just_audio/just_audio.dart';
 class DetailSurahController extends GetxController {
   final player = AudioPlayer();
 
+  Ayat? lastAyat;
+
   Future<DetailSurah> getDetailSurah(String id) async {
     Uri uri = Uri.parse('https://equran.id/api/v2/surat/$id');
     var res = await http.get(uri);
@@ -21,6 +23,13 @@ class DetailSurahController extends GetxController {
   void playAudio(Ayat ayat) async {
     if (ayat.audio.values.first.isNotEmpty) {
       try {
+        if(lastAyat == null) {
+          lastAyat = ayat;
+        }
+        lastAyat!.kondisiAudio = "stop";
+        lastAyat = ayat;
+                lastAyat!.kondisiAudio = "stop";
+                update();
         await player.stop(); // mencegah tumpukan audio saat sedang berjalan
         await player.setUrl(ayat.audio.values.first);
         ayat.kondisiAudio = "playing";
