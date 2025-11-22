@@ -150,18 +150,17 @@ class DetailSurahView extends GetView<DetailSurahController> {
                               ),
                             ),
                           ),
-                          Obx(
-                            () => Row(
+                          GetBuilder<DetailSurahController>(builder: (c) => Row(
                               children: [
                                 IconButton(
                                   onPressed: () {},
                                   icon: Icon(Icons.bookmark_add_outlined),
                                 ),
-                                (controller.kondisiAudio.value == "stop")
+                                (ayat.kondisiAudio == "stop")
                                     ? IconButton(
                                         onPressed: () {
-                                          controller.playAudio(
-                                            ayat.audio.values.first,
+                                          c.playAudio(
+                                            ayat
                                           );
                                         },
                                         icon: Icon(Icons.play_arrow),
@@ -169,32 +168,31 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                     : Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          (controller.kondisiAudio.value ==
+                                          (ayat.kondisiAudio ==
                                                   "playing")
                                               ? IconButton(
                                                   onPressed: () {
-                                                    controller.pauseAudio(
+                                                    c.pauseAudio(ayat
                                           ); 
                                                   },
                                                   icon: Icon(Icons.pause),
                                                 )
                                               : IconButton(
                                                   onPressed: () {
-                                                    controller.resumeAudio();
+                                                    c.resumeAudio(ayat);
                                                   },
                                                   icon: Icon(Icons.play_arrow),
                                                 ),
                                           IconButton(
                                             onPressed: () {
-                                               controller.stopAudio();
+                                               c.stopAudio(ayat);
                                             },
                                             icon: Icon(Icons.stop),
                                           ),
                                         ],
                                       ),
                               ],
-                            ),
-                          ),
+                            ),)
                         ],
                       ),
                     ),

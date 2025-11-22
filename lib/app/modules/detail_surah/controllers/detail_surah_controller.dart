@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
 class DetailSurahController extends GetxController {
-  RxString kondisiAudio = "stop".obs;
   final player = AudioPlayer();
 
   Future<DetailSurah> getDetailSurah(String id) async {
@@ -19,95 +18,17 @@ class DetailSurahController extends GetxController {
     return DetailSurah.fromJson(data);
   }
 
-  void pauseAudio() async {
-    try {
-        await player.pause();
-                      kondisiAudio.value = "pause";
-        
-      } on PlayerException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: e.message.toString(),
-        );
-      } on PlayerInterruptedException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Connection aborted: ${e.message}",
-        );
-      }
-
-      // Listening to errors during playback (e.g. lost network connection)
-      player.errorStream.listen((PlayerException e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Tidak dapat pause audio",
-        );
-      });
-  }
-
-  void stopAudio() async {
-    try {
-        await player.stop();
-        kondisiAudio.value = "stop";
-        
-      } on PlayerException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: e.message.toString(),
-        );
-      } on PlayerInterruptedException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Connection aborted: ${e.message}",
-        );
-      }
-
-      // Listening to errors during playback (e.g. lost network connection)
-      player.errorStream.listen((PlayerException e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Tidak dapat stop audio",
-        );
-      });
-  }
-
-  void resumeAudio() async {
-    try {
-              kondisiAudio.value = "playing";
-        await player.play();
-        kondisiAudio.value = "stop";
-        
-      } on PlayerException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: e.message.toString(),
-        );
-      } on PlayerInterruptedException catch (e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Connection aborted: ${e.message}",
-        );
-      }
-
-      // Listening to errors during playback (e.g. lost network connection)
-      player.errorStream.listen((PlayerException e) {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Tidak dapat play audio",
-        );
-      });
-  }
-
-  void playAudio(String? url) async {
-    if (url != null) {
+  void playAudio(Ayat ayat) async {
+    if (ayat.audio.values.first.isNotEmpty) {
       try {
         await player.stop(); // mencegah tumpukan audio saat sedang berjalan
-        await player.setUrl(url);
-        kondisiAudio.value = "playing";
+        await player.setUrl(ayat.audio.values.first);
+        ayat.kondisiAudio = "playing";
+        update();
         await player.play();
-        kondisiAudio.value = "stop";
+        ayat.kondisiAudio = "stop";
         await player.stop();
-        
+        update();
       } on PlayerException catch (e) {
         Get.defaultDialog(
           title: "Terjadi Kesalahan",
@@ -127,12 +48,87 @@ class DetailSurahController extends GetxController {
           middleText: "Tidak dapat memutar audio",
         );
       });
-    } else {
+    }
+  }
+
+  void pauseAudio(Ayat ayat) async {
+    try {
+      await player.pause();
+      ayat.kondisiAudio = "pause";
+      update();
+    } on PlayerException catch (e) {
       Get.defaultDialog(
         title: "Terjadi Kesalahan",
-        middleText: "URL Audio tidak ada / tidak dapat diakses",
+        middleText: e.message.toString(),
+      );
+    } on PlayerInterruptedException catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Connection aborted: ${e.message}",
       );
     }
+
+    // Listening to errors during playback (e.g. lost network connection)
+    player.errorStream.listen((PlayerException e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Tidak dapat pause audio",
+      );
+    });
+  }
+
+  void stopAudio(Ayat ayat) async {
+    try {
+      await player.stop();
+      ayat.kondisiAudio = "stop";
+      update();
+    } on PlayerException catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: e.message.toString(),
+      );
+    } on PlayerInterruptedException catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Connection aborted: ${e.message}",
+      );
+    }
+
+    // Listening to errors during playback (e.g. lost network connection)
+    player.errorStream.listen((PlayerException e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Tidak dapat stop audio",
+      );
+    });
+  }
+
+  void resumeAudio(Ayat ayat) async {
+    try {
+      ayat.kondisiAudio = "playing";
+      update();
+      await player.play();
+      ayat.kondisiAudio = "stop";
+      update();
+    } on PlayerException catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: e.message.toString(),
+      );
+    } on PlayerInterruptedException catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Connection aborted: ${e.message}",
+      );
+    }
+
+    // Listening to errors during playback (e.g. lost network connection)
+    player.errorStream.listen((PlayerException e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Tidak dapat play audio",
+      );
+    });
   }
 
   @override

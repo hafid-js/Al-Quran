@@ -54,6 +54,7 @@ class Ayat {
   final String teksLatin;
   final String teksIndonesia;
   final Map<String, String> audio;
+  String kondisiAudio;
 
   Ayat({
     required this.nomorAyat,
@@ -61,6 +62,7 @@ class Ayat {
     required this.teksLatin,
     required this.teksIndonesia,
     required this.audio,
+    this.kondisiAudio = "stop",
   });
 
   factory Ayat.fromJson(Map<String, dynamic> json) => Ayat(
@@ -69,6 +71,7 @@ class Ayat {
     teksLatin: json["teksLatin"],
     teksIndonesia: json["teksIndonesia"],
     audio: Map<String, String>.from(json["audio"] ?? {}),
+    kondisiAudio: "stop"
   );
 }
 
