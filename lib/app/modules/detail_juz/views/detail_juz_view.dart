@@ -2,8 +2,6 @@ import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:alquran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:alquran/app/data/models/detail_surah.dart' as detail;
-
 
 import 'package:get/get.dart';
 
@@ -13,6 +11,7 @@ class DetailJuzBinding extends Bindings {
     Get.lazyPut<DetailSurahController>(() => DetailSurahController());
   }
 }
+
 class DetailJuzView extends StatelessWidget {
   final int juzNumber = Get.arguments;
   final controller = Get.put(DetailJuzController());
@@ -20,8 +19,8 @@ class DetailJuzView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Juz $juzNumber'), centerTitle: true),
-      body: FutureBuilder<List<detail.Ayat>>(
+      appBar: AppBar(title: Text('Juz $juzNumber', style: TextStyle(color: appWhite),), centerTitle: true),
+      body: FutureBuilder<List<AyatFull>>(
         future: controller.getAyatFromJuz(juzNumber),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,7 +47,10 @@ class DetailJuzView extends StatelessWidget {
                       color: Get.isDarkMode ? appPurple : Colors.grey[200],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 10,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -62,10 +64,14 @@ class DetailJuzView extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                "${ayat.nomorAyat}",
+                                "${ayat.ayat.nomorAyat}",
                                 style: TextStyle(color: appPurpleDark),
                               ),
                             ),
+                          ),
+                          Text(
+                            ayat.surahLatinName,
+                            textAlign: TextAlign.center,
                           ),
                           Row(
                             children: [
@@ -85,19 +91,19 @@ class DetailJuzView extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    ayat.teksArab,
+                    ayat.ayat.teksArab,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontSize: 25),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    ayat.teksLatin,
+                    ayat.ayat.teksLatin,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontSize: 18),
                   ),
                   SizedBox(height: 25),
                   Text(
-                    ayat.teksIndonesia,
+                    ayat.ayat.teksIndonesia,
                     textAlign: TextAlign.justify,
                     style: TextStyle(fontSize: 18),
                   ),
