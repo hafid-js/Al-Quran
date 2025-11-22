@@ -1,4 +1,6 @@
 import 'package:alquran/app/contants/color.dart';
+import 'package:alquran/app/data/models/detail_surah.dart';
+import 'package:alquran/app/data/models/juz.dart';
 import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:alquran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,8 @@ class DetailJuzView extends StatelessWidget {
             itemBuilder: (context, index) {
               final ayat = ayatList[index];
 
+             Ayat surah = ayat.ayat;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -64,7 +68,7 @@ class DetailJuzView extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                "${ayat.ayat.nomorAyat}",
+                                "${surah.nomorAyat}",
                                 style: TextStyle(color: appPurpleDark),
                               ),
                             ),
@@ -73,37 +77,68 @@ class DetailJuzView extends StatelessWidget {
                             ayat.surahLatinName,
                             textAlign: TextAlign.center,
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.bookmark_add_outlined),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.play_arrow),
-                              ),
-                            ],
-                          ),
+                          GetBuilder<DetailJuzController>(builder: (c) => Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.bookmark_add_outlined),
+                                ),
+                                (surah.kondisiAudio == "stop")
+                                    ? IconButton(
+                                        onPressed: () {
+                                          c.playAudio(
+                                            ayat
+                                          );
+                                        },
+                                        icon: Icon(Icons.play_arrow),
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          (surah.kondisiAudio ==
+                                                  "playing")
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    c.pauseAudio(ayat
+                                          ); 
+                                                  },
+                                                  icon: Icon(Icons.pause),
+                                                )
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    c.resumeAudio(ayat);
+                                                  },
+                                                  icon: Icon(Icons.play_arrow),
+                                                ),
+                                          IconButton(
+                                            onPressed: () {
+                                               c.stopAudio(ayat);
+                                            },
+                                            icon: Icon(Icons.stop),
+                                          ),
+                                        ],
+                                      ),
+                              ],
+                            ),)
                         ],
                       ),
                     ),
                   ),
                   SizedBox(height: 20),
                   Text(
-                    ayat.ayat.teksArab,
+                    surah.teksArab,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontSize: 25),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    ayat.ayat.teksLatin,
+                    surah.teksLatin,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontSize: 18),
                   ),
                   SizedBox(height: 25),
                   Text(
-                    ayat.ayat.teksIndonesia,
+                    surah.teksIndonesia,
                     textAlign: TextAlign.justify,
                     style: TextStyle(fontSize: 18),
                   ),

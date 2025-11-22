@@ -86,6 +86,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         children: [
+                          
                           Text(
                             detailSurah.namaLatin.toUpperCase(),
                             style: TextStyle(

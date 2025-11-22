@@ -34,7 +34,7 @@ class HomeView extends GetView<HomeController> {
             children: [
               Text(
                 "Assalamualaikum",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, color: appPurpleDark),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
@@ -56,12 +56,12 @@ class HomeView extends GetView<HomeController> {
                             bottom: -30,
                             right: 0,
                             child: Opacity(
-                              opacity: 0.6,
+                              opacity: 0.5,
                               child: Container(
                                 width: 200,
                                 height: 200,
                                 child: Image.asset(
-                                  "assets/images/alquran.png",
+                                  "assets/images/alquran2.png",
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -146,7 +146,7 @@ class HomeView extends GetView<HomeController> {
                         if (snapshot.data == null || snapshot.data!.isEmpty) {
                           return Center(child: Text('Tidak ada data'));
                         }
-                        return ListView.builder(
+                        return ListView.separated(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Surah surah = snapshot.data![index];
@@ -174,21 +174,27 @@ class HomeView extends GetView<HomeController> {
                                   child: Center(
                                     child: Text(
                                       "${surah.nomor}",
-                                      style: TextStyle(color: appPurpleDark),
+                                      style: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
                               ),
-                              title: Text(surah.namaLatin),
+                              title: Obx(() => Text(surah.namaLatin, style: TextStyle(color: controller.isDark.isTrue ? appWhite : appPurpleDark),),),
                               subtitle: Text(
                                 '${surah.jumlahAyat} Ayat | ${surah.tempatTurun}',
                               ),
-                              trailing: Text(
+                              trailing: Obx(()=>Text(
                                 "${surah.nama}",
-                                style: TextStyle(fontSize: 17),
-                              ),
+                                style: TextStyle(fontSize: 17, color: controller.isDark.isTrue ? appWhite : appPurpleDark,),
+                              ),)
                             );
+                            
                           },
+                          separatorBuilder: (context, index) => Divider(
+    color: Colors.grey[300],
+    thickness: 1,
+    height: 1,
+  ),
                         );
                       },
                     ),
@@ -203,7 +209,8 @@ class HomeView extends GetView<HomeController> {
                         if (snapshot.data == null || snapshot.data!.isEmpty) {
                           return Center(child: Text('Tidak ada data'));
                         }
-                        return ListView.builder(
+                        return ListView.separated(
+                                                    padding: EdgeInsets.only(top: 8),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Juz detailJuz = snapshot.data![index];
@@ -245,7 +252,7 @@ class HomeView extends GetView<HomeController> {
                                   child: Center(
                                     child: Text(
                                       "${index + 1}",
-                                      style: TextStyle(color: appPurpleDark),
+                                      style: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -266,6 +273,11 @@ class HomeView extends GetView<HomeController> {
                               ),
                             );
                           },
+                          separatorBuilder: (context, index) => Divider(
+    color: Colors.grey[300],
+    thickness: 1,
+    height: 1,
+  ),
                         );
                       },
                     ),

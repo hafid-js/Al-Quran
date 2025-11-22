@@ -16,11 +16,13 @@ class HomeController extends GetxController {
 
     final box = GetStorage();
 
-    if (Get.isDarkMode) {
+    if(Get.isDarkMode) {
       box.remove("themeDark");
     } else {
-      box.write("themeDark", true);
+          box.write("themeDark", true);
     }
+
+
   }
 
   Future<List<Surah>> getAllSurah() async {

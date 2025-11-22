@@ -41,7 +41,7 @@ class IntroductionView extends GetView<IntroductionController> {
               child: Text(
                 "MULAI",
                 style: TextStyle(
-                  color: Get.isDarkMode ? appPurpleDark : appWhite,
+                  color: Get.isDarkMode ? appPurpleDark : appWhite, fontWeight: FontWeight.bold
                 ),
               ),
                style: ElevatedButton.styleFrom(backgroundColor: Get.isDarkMode ? appWhite : appPurple, padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15)),
