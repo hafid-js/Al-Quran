@@ -41,6 +41,7 @@ dependencies:
   arabizi_transliterator: ^1.0.0
   flutter_translate: ^4.1.0
   get_storage: ^2.1.1
+  just_audio: ^0.10.5
 
 dev_dependencies:
   flutter_test:
