@@ -217,7 +217,7 @@ class HomeView extends GetView<HomeController> {
                               ),
                               trailing: Obx(
                                 () => Text(
-                                  "${surah.nama}",
+                                  surah.nama,
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: controller.isDark.isTrue

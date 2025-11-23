@@ -1,14 +1,73 @@
 import 'dart:convert';
 
+import 'package:alquran/app/contants/color.dart';
+import 'package:alquran/app/data/db/bookmark.dart';
 import 'package:alquran/app/data/models/detail_surah.dart';
+import 'package:alquran/app/data/models/juz.dart';
+import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class DetailSurahController extends GetxController {
   final player = AudioPlayer();
   RxBool isDark = Get.isDarkMode.obs;
   Ayat? lastAyat;
+
+  DatabaseManager database = DatabaseManager.instance;
+
+  void addBookmark(
+    bool lastRead,
+    DetailSurah surah,
+    Ayat ayat,
+    int indexAyat,
+  ) async {
+    Database db = await database.db;
+
+    bool flagExist = false;
+
+    if (lastRead == true) {
+      await db.delete("bookmark", where: "last_read = 1");
+    } else {
+      List checkData = await db.query(
+        "bookmark",
+        where:
+            "surah = '${surah.nama}' and ayat = ${ayat.nomorAyat} and via = 'surah' and index_ayat = $indexAyat and last_read = 0",
+      );
+      if (checkData.length != 0) {
+        flagExist = true;
+      }
+    }
+
+    if (flagExist == false) {
+      await db.insert("bookmark", {
+        "surah": surah.nama,
+        "ayat": ayat.nomorAyat,
+        // "juz": juzNumber,
+        "via": "surah",
+        "index_ayat": indexAyat,
+        "last_read": lastRead == true ? 1 : 0,
+      });
+
+      Get.back();
+
+      // Get.snackbar(
+      //   "Berhasil",
+      //   "Berhasil menambahkan bookmark",
+      //   colorText: appWhite,
+      // );
+    } else {
+      // Get.snackbar(
+      //   "Terjadi Kesalahan",
+      //   "Bookmark telah tersedia",
+      //   colorText: appWhite,
+      // );
+    }
+
+    var data = await db.query("bookmark");
+    print(data);
+  }
 
   Future<DetailSurah> getDetailSurah(String id) async {
     Uri uri = Uri.parse('https://equran.id/api/v2/surat/$id');
@@ -23,9 +82,7 @@ class DetailSurahController extends GetxController {
   void playAudio(Ayat ayat) async {
     if (ayat.audio.values.first.isNotEmpty) {
       try {
-        if (lastAyat == null) {
-          lastAyat = ayat;
-        }
+        lastAyat ??= ayat;
         lastAyat!.kondisiAudio = "stop";
         lastAyat = ayat;
         lastAyat!.kondisiAudio = "stop";

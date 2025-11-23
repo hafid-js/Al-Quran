@@ -36,43 +36,21 @@ class HomeController extends GetxController {
     }
   }
 
-Future<List<Juz>> getAllJuz() async {
-  List<Future<Juz?>> futures = [];
+  Future<List<Juz>> getAllJuz() async {
+    List<Juz> allJuz = [];
 
-  for (int i = 1; i <= 30; i++) {
-    futures.add(fetchJuzWithRetry(i, retries: 3));
-  }
+    for (int i = 1; i <= 30; i++) {
+      Uri uri = Uri.parse('https://api.alquran.cloud/v1/juz/$i');
+      var res = await http.get(uri);
 
-  final results = await Future.wait(futures);
-  return results.whereType<Juz>().toList();
-}
+      Map<String, dynamic> data =
+          (json.decode(res.body) as Map<String, dynamic>)["data"];
 
-Future<Juz?> fetchJuzWithRetry(int number, {int retries = 3}) async {
-  while (retries > 0) {
-    try {
-      Uri uri = Uri.parse('https://api.alquran.cloud/v1/juz/$number');
-      final res = await http.get(uri).timeout(Duration(seconds: 10));
+      Juz juz = Juz.fromJson(data);
 
-      if (res.statusCode == 200) {
-        Map<String, dynamic> data =
-            (json.decode(res.body) as Map<String, dynamic>)["data"];
-        return Juz.fromJson(data);
-      } else {
-        print('Failed Juz $number: status code ${res.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching Juz $number: $e');
+      allJuz.add(juz);
     }
 
-    retries--;
-    if (retries > 0) {
-      await Future.delayed(Duration(seconds: 2)); // tunggu sebelum retry
-      print('Retrying Juz $number, remaining attempts: $retries');
-    }
+    return allJuz;
   }
-
-  print('Failed to fetch Juz $number after retries');
-  return null;
-}
-
 }

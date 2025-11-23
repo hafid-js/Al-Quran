@@ -1,6 +1,7 @@
 import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran/app/data/models/surah.dart';
+import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,8 @@ import '../controllers/detail_surah_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {
   final Surah surah = Get.arguments;
+
+  DetailJuzController juzC = DetailJuzController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
           }
 
           final detailSurah = snapshot.data!;
+          // final juzNumber = juzC.getAyatFromJuz(detailSurah.)
 
           return ListView.builder(
             padding: EdgeInsets.all(20),
@@ -221,11 +225,13 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                     Get.defaultDialog(
                                       title: "BOOKMARK",
                                       middleText: "Pilih Jenis Bookmark",
+                                      middleTextStyle: TextStyle(color: Colors.black),
                                       titleStyle: TextStyle(fontWeight: FontWeight.w400),
                                       actions: [
                                         ElevatedButton(
-                                          onPressed: () {},
-
+                                          onPressed: () {
+                                             c.addBookmark(false, snapshot.data!, ayat, index);
+                                          },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,
                                             foregroundColor: Colors.white,
@@ -241,7 +247,9 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                           child: Text("LAST READ"),
                                         ),
                                         ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                              c.addBookmark(true, snapshot.data!, ayat, index);
+                                          },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,
                                             foregroundColor: Colors.white,
