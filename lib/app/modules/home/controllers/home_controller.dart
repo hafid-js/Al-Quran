@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
-  RxBool isDark = false.obs;
+ RxBool isDark = Get.isDarkMode.obs;
 
   void changeThemeMode() async {
     Get.isDarkMode ? Get.changeTheme(themeLight) : Get.changeTheme(themeDark);
@@ -21,8 +21,6 @@ class HomeController extends GetxController {
     } else {
           box.write("themeDark", true);
     }
-
-
   }
 
   Future<List<Surah>> getAllSurah() async {
@@ -38,21 +36,43 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<List<Juz>> getAllJuz() async {
-    List<Juz> allJuz = [];
+Future<List<Juz>> getAllJuz() async {
+  List<Future<Juz?>> futures = [];
 
-    for (int i = 1; i <= 30; i++) {
-      Uri uri = Uri.parse('https://api.alquran.cloud/v1/juz/$i');
-      var res = await http.get(uri);
+  for (int i = 1; i <= 30; i++) {
+    futures.add(fetchJuzWithRetry(i, retries: 3));
+  }
 
-      Map<String, dynamic> data =
-          (json.decode(res.body) as Map<String, dynamic>)["data"];
+  final results = await Future.wait(futures);
+  return results.whereType<Juz>().toList();
+}
 
-      Juz juz = Juz.fromJson(data);
+Future<Juz?> fetchJuzWithRetry(int number, {int retries = 3}) async {
+  while (retries > 0) {
+    try {
+      Uri uri = Uri.parse('https://api.alquran.cloud/v1/juz/$number');
+      final res = await http.get(uri).timeout(Duration(seconds: 10));
 
-      allJuz.add(juz);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> data =
+            (json.decode(res.body) as Map<String, dynamic>)["data"];
+        return Juz.fromJson(data);
+      } else {
+        print('Failed Juz $number: status code ${res.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching Juz $number: $e');
     }
 
-    return allJuz;
+    retries--;
+    if (retries > 0) {
+      await Future.delayed(Duration(seconds: 2)); // tunggu sebelum retry
+      print('Retrying Juz $number, remaining attempts: $retries');
+    }
   }
+
+  print('Failed to fetch Juz $number after retries');
+  return null;
+}
+
 }

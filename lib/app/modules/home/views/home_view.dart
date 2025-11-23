@@ -14,7 +14,15 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Al Quran Apps', style: TextStyle(color: appWhite)),
+        title: Obx(
+          () => Text(
+            'Al Quran Apps',
+            style: TextStyle(
+              color: controller.isDark.isTrue ? appWhite : appPurpleDark,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -32,9 +40,14 @@ class HomeView extends GetView<HomeController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Assalamualaikum",
-                style: TextStyle(fontSize: 18, color: appPurpleDark),
+              Obx(
+                () => Text(
+                  "Assalamualaikum",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: controller.isDark.isTrue ? appWhite : appPurpleDark,
+                  ),
+                ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
@@ -174,27 +187,52 @@ class HomeView extends GetView<HomeController> {
                                   child: Center(
                                     child: Text(
                                       "${surah.nomor}",
-                                      style: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                        color: appPurpleDark,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                              title: Obx(() => Text(surah.namaLatin, style: TextStyle(color: controller.isDark.isTrue ? appWhite : appPurpleDark),),),
-                              subtitle: Text(
-                                '${surah.jumlahAyat} Ayat | ${surah.tempatTurun}',
+                              title: Obx(
+                                () => Text(
+                                  surah.namaLatin,
+                                  style: TextStyle(
+                                    color: controller.isDark.isTrue
+                                        ? appWhite
+                                        : appPurpleDark,
+                                    inherit: false,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                              trailing: Obx(()=>Text(
-                                "${surah.nama}",
-                                style: TextStyle(fontSize: 17, color: controller.isDark.isTrue ? appWhite : appPurpleDark,),
-                              ),)
+                              subtitle: Text(
+                                '${surah.tempatTurun} | ${surah.jumlahAyat} Ayat',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              trailing: Obx(
+                                () => Text(
+                                  "${surah.nama}",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: controller.isDark.isTrue
+                                        ? appWhite
+                                        : appPurpleDark,
+                                  ),
+                                ),
+                              ),
                             );
-                            
                           },
                           separatorBuilder: (context, index) => Divider(
-    color: Colors.grey[300],
-    thickness: 1,
-    height: 1,
-  ),
+                            color: Colors.grey[300],
+                            thickness: 1,
+                            height: 1,
+                          ),
                         );
                       },
                     ),
@@ -210,7 +248,7 @@ class HomeView extends GetView<HomeController> {
                           return Center(child: Text('Tidak ada data'));
                         }
                         return ListView.separated(
-                                                    padding: EdgeInsets.only(top: 8),
+                          padding: EdgeInsets.only(top: 8),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Juz detailJuz = snapshot.data![index];
@@ -228,7 +266,7 @@ class HomeView extends GetView<HomeController> {
                             final lastAyah = ayatList.lastWhere(
                               (a) => a.surah!.number == lastSurah,
                             );
-                            
+
                             return ListTile(
                               onTap: () {
                                 Get.toNamed(
@@ -252,32 +290,53 @@ class HomeView extends GetView<HomeController> {
                                   child: Center(
                                     child: Text(
                                       "${index + 1}",
-                                      style: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),
-                                    ),
+                                      style: TextStyle(
+                                        color: appPurpleDark,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                  ),
+                                ),
+                              ),),
+                              title: Obx(
+                                () => Text(
+                                  "Juz ${index + 1}",
+                                  style: TextStyle(
+                                    color: controller.isDark.isTrue
+                                        ? appWhite
+                                        : appPurpleDark,
+                                    inherit: false,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
-                              title: Text("Juz ${index + 1}"),
                               isThreeLine: true,
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "Mulai Dari ${detailJuz.surahs!.items[keys.first]!.englishName} - ${firstAyah.numberInSurah} ",
-                                  ),
-                                  Text(
-                                    "Sampai ${detailJuz.surahs!.items[keys.last]!.englishName} - ${lastAyah.numberInSurah}",
-                                  ),
+                                "Mulai Dari ${detailJuz.surahs!.items[keys.first]!.englishName} - ${firstAyah.numberInSurah} ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                "Sampai ${detailJuz.surahs!.items[keys.last]!.englishName} - ${lastAyah.numberInSurah}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),),
                                 ],
                               ),
                             );
                           },
                           separatorBuilder: (context, index) => Divider(
-    color: Colors.grey[300],
-    thickness: 1,
-    height: 1,
-  ),
+                            color: Colors.grey[300],
+                            thickness: 1,
+                            height: 1,
+                          ),
                         );
                       },
                     ),

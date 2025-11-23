@@ -17,13 +17,18 @@ class DetailSurahView extends GetView<DetailSurahController> {
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: Icon(Icons.arrow_back),
-          color: appWhite,
+          color: controller.isDark.isTrue ? appWhite : Colors.grey[600],
         ),
         title: Text(
-          'SURAH ${surah.namaLatin.toUpperCase()}',
-          style: TextStyle(color: appWhite),
+          '${surah.namaLatin.toUpperCase()}',
+          style: TextStyle(
+            color: controller.isDark.isTrue ? appWhite : appPurple,
+            fontWeight: FontWeight.w900,
+            fontSize: 16,
+          ),
+          overflow: TextOverflow.ellipsis,
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: FutureBuilder<detail.DetailSurah>(
         future: controller.getDetailSurah(surah.nomor.toString()),
@@ -74,46 +79,103 @@ class DetailSurahView extends GetView<DetailSurahController> {
                       ),
                     ),
                   ),
+
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       gradient: LinearGradient(
                         colors: [appPurpleLight1, appPurpleDark],
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          
-                          Text(
-                            detailSurah.namaLatin.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: appWhite,
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                      child: InkWell(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [appPurpleLight1, appPurpleDark],
                             ),
                           ),
-                          Text(
-                            "(${detailSurah.arti.toUpperCase()})",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: appWhite,
+                          child: Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              child: Container(
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      bottom: -30,
+                                      right: 0,
+                                      child: Opacity(
+                                        opacity: 0.5,
+                                        child: SizedBox(
+                                          width: 200,
+                                          height: 200,
+                                          child: Image.asset(
+                                            "assets/images/alquran2.png",
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              detailSurah.namaLatin
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: appWhite,
+                                              ),
+                                            ),
+                                            Text(
+                                              "(${detailSurah.arti.toUpperCase()})",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: appWhite,
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Container(
+                                              height: 1,
+                                              width: 200,
+                                              color: Colors.white.withAlpha(
+                                                100,
+                                              ),
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 3,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${detailSurah.jumlahAyat} Ayat | ${detailSurah.tempatTurun}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: appWhite,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "${detailSurah.jumlahAyat} Ayat | ${detailSurah.tempatTurun}",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: appWhite,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -137,8 +199,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            height: 40,
-                            width: 40,
+                            height: 35,
+                            width: 35,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage("assets/images/list.png"),
@@ -151,30 +213,68 @@ class DetailSurahView extends GetView<DetailSurahController> {
                               ),
                             ),
                           ),
-                          GetBuilder<DetailSurahController>(builder: (c) => Row(
+                          GetBuilder<DetailSurahController>(
+                            builder: (c) => Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.defaultDialog(
+                                      title: "BOOKMARK",
+                                      middleText: "Pilih Jenis Bookmark",
+                                      titleStyle: TextStyle(fontWeight: FontWeight.w400),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {},
+
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: appPurple,
+                                            foregroundColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 12,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text("LAST READ"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: appPurple,
+                                            foregroundColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 12,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text("BOOKMARK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                   icon: Icon(Icons.bookmark_add_outlined),
                                 ),
                                 (ayat.kondisiAudio == "stop")
                                     ? IconButton(
                                         onPressed: () {
-                                          c.playAudio(
-                                            ayat
-                                          );
+                                          c.playAudio(ayat);
                                         },
                                         icon: Icon(Icons.play_arrow),
                                       )
                                     : Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          (ayat.kondisiAudio ==
-                                                  "playing")
+                                          (ayat.kondisiAudio == "playing")
                                               ? IconButton(
                                                   onPressed: () {
-                                                    c.pauseAudio(ayat
-                                          ); 
+                                                    c.pauseAudio(ayat);
                                                   },
                                                   icon: Icon(Icons.pause),
                                                 )
@@ -186,14 +286,15 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                 ),
                                           IconButton(
                                             onPressed: () {
-                                               c.stopAudio(ayat);
+                                              c.stopAudio(ayat);
                                             },
                                             icon: Icon(Icons.stop),
                                           ),
                                         ],
                                       ),
                               ],
-                            ),)
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -202,19 +303,32 @@ class DetailSurahView extends GetView<DetailSurahController> {
                   Text(
                     ayat.teksArab,
                     textAlign: TextAlign.end,
-                    style: TextStyle(fontSize: 25),
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: controller.isDark.isTrue
+                          ? appWhite
+                          : appPurpleDark,
+                    ),
                   ),
                   SizedBox(height: 10),
                   Text(
                     ayat.teksLatin,
                     textAlign: TextAlign.end,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: controller.isDark.isTrue ? appWhite : Colors.black,
+                    ),
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 15),
                   Text(
                     ayat.teksIndonesia,
                     textAlign: TextAlign.justify,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: controller.isDark.isTrue ? appWhite : Colors.black,
+                    ),
                   ),
                   SizedBox(height: 50),
                 ],

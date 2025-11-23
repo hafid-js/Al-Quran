@@ -27,6 +27,8 @@ class DetailJuzController extends GetxController {
 
   AyatFull? lastAyat;
 
+  RxBool isDark = Get.isDarkMode.obs;
+
 
 Future<List<AyatFull>> getAyatFromJuz(int juzNumber) async {
   final response = await http.get(Uri.parse('https://api.alquran.cloud/v1/juz/$juzNumber'));

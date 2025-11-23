@@ -15,7 +15,7 @@ ThemeData themeLight = ThemeData(
   ),
   primaryColor: appPurpleDark,
   scaffoldBackgroundColor: appWhite,
-  appBarTheme: AppBarTheme(backgroundColor: appPurpleDark),
+  appBarTheme: AppBarTheme(backgroundColor: appWhite),
   textTheme: TextTheme(
     bodyLarge: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),
     bodyMedium: TextStyle(color: appPurpleDark, fontWeight: FontWeight.bold),

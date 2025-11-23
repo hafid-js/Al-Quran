@@ -21,7 +21,10 @@ class DetailJuzView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Juz $juzNumber', style: TextStyle(color: appWhite),), centerTitle: true),
+      appBar: AppBar(
+        title: Text('Juz $juzNumber', style: TextStyle(color: appWhite)),
+        centerTitle: true,
+      ),
       body: FutureBuilder<List<AyatFull>>(
         future: controller.getAyatFromJuz(juzNumber),
         builder: (context, snapshot) {
@@ -40,7 +43,7 @@ class DetailJuzView extends StatelessWidget {
             itemBuilder: (context, index) {
               final ayat = ayatList[index];
 
-             Ayat surah = ayat.ayat;
+              Ayat surah = ayat.ayat;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -77,7 +80,8 @@ class DetailJuzView extends StatelessWidget {
                             ayat.surahLatinName,
                             textAlign: TextAlign.center,
                           ),
-                          GetBuilder<DetailJuzController>(builder: (c) => Row(
+                          GetBuilder<DetailJuzController>(
+                            builder: (c) => Row(
                               children: [
                                 IconButton(
                                   onPressed: () {},
@@ -86,21 +90,17 @@ class DetailJuzView extends StatelessWidget {
                                 (surah.kondisiAudio == "stop")
                                     ? IconButton(
                                         onPressed: () {
-                                          c.playAudio(
-                                            ayat
-                                          );
+                                          c.playAudio(ayat);
                                         },
                                         icon: Icon(Icons.play_arrow),
                                       )
                                     : Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          (surah.kondisiAudio ==
-                                                  "playing")
+                                          (surah.kondisiAudio == "playing")
                                               ? IconButton(
                                                   onPressed: () {
-                                                    c.pauseAudio(ayat
-                                          ); 
+                                                    c.pauseAudio(ayat);
                                                   },
                                                   icon: Icon(Icons.pause),
                                                 )
@@ -112,14 +112,15 @@ class DetailJuzView extends StatelessWidget {
                                                 ),
                                           IconButton(
                                             onPressed: () {
-                                               c.stopAudio(ayat);
+                                              c.stopAudio(ayat);
                                             },
                                             icon: Icon(Icons.stop),
                                           ),
                                         ],
                                       ),
                               ],
-                            ),)
+                            ),
+                          ),
                         ],
                       ),
                     ),
