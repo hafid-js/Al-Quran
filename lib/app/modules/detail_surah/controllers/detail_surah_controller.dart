@@ -1,10 +1,6 @@
 import 'dart:convert';
-
-import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/db/bookmark.dart';
 import 'package:alquran/app/data/models/detail_surah.dart';
-import 'package:alquran/app/data/models/juz.dart';
-import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
@@ -33,16 +29,18 @@ class DetailSurahController extends GetxController {
       List checkData = await db.query(
         "bookmark",
         where:
-            "surah = '${surah.nama}' and ayat = ${ayat.nomorAyat} and via = 'surah' and index_ayat = $indexAyat and last_read = 0",
+            "surah = ? AND ayat = ? AND via = ? AND index_ayat = ? AND last_read = 0",
+        whereArgs: [surah.namaLatin, ayat.nomorAyat, "surah", indexAyat],
       );
-      if (checkData.length != 0) {
+
+      if (checkData.isNotEmpty) {
         flagExist = true;
       }
     }
 
     if (flagExist == false) {
       await db.insert("bookmark", {
-        "surah": surah.nama,
+        "surah": surah.namaLatin,
         "ayat": ayat.nomorAyat,
         // "juz": juzNumber,
         "via": "surah",
