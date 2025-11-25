@@ -230,7 +230,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                       actions: [
                                         ElevatedButton(
                                           onPressed: () {
-                                             c.addBookmark(false, snapshot.data!, ayat, index);
+                                            c.addBookmark(true, snapshot.data!, ayat, index);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,
@@ -248,7 +248,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                              c.addBookmark(true, snapshot.data!, ayat, index);
+                                              c.addBookmark(false, snapshot.data!, ayat, index);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,

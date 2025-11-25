@@ -363,9 +363,50 @@ class HomeView extends GetView<HomeController> {
                           onTap: () {
                             print(index);
                           },
-                          leading: CircleAvatar(child: Text("${index + 1}"),),
-                          title: Text("${data['surah']}"),
-                          subtitle: Text("Ayat ${data['ayat']} - via ${data['via']}"),
+                          leading: Obx(
+                                () => Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        controller.isDark.isTrue
+                                            ? "assets/images/list.png"
+                                            : "assets/images/list.png",
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${index + 1}",
+                                      style: TextStyle(
+                                        color: appPurpleDark,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          title: Obx(
+                                () => Text(
+                                  "${data['surah']}",
+                                  style: TextStyle(
+                                    color: controller.isDark.isTrue
+                                        ? appWhite
+                                        : appPurpleDark,
+                                    inherit: false,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                          subtitle: Text("Ayat ${data['ayat']} - via ${data['via']}", style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),),
+                          trailing: IconButton(onPressed: () {
+                            c.deleteBookmark(data['id']);
+                          }, icon: Icon(Icons.delete)),
                         );
                       });
                     },);
