@@ -10,22 +10,37 @@ import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart';
 
 class HomeController extends GetxController {
- RxBool isDark = Get.isDarkMode.obs;
+  RxBool isDark = Get.isDarkMode.obs;
 
- DatabaseManager database = DatabaseManager.instance;
+  DatabaseManager database = DatabaseManager.instance;
 
- deleteBookmark(int id) async {
-  Database db = await database.db;
-  await db.delete("bookmark", where: "id = $id");
-  update();
-  // Get.snackbar("Berhasil", "Telah berhasil menghapus bookmark");
- }
+  Future<Map<String, dynamic>?> getLastRead() async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> dataLastRead = await db.query(
+      "bookmark",
+      where: "last_read = 1",
+    );
+    if (dataLastRead.length == 0) {
+      return null;
+    } else {
+      return dataLastRead.first;
+    }
+  }
 
- Future<List<Map<String, dynamic>>> getBookmark() async {
-  Database db = await database.db;
-  List<Map<String, dynamic>> allbookmarks = await db.query("bookmark", where: "last_read = 0");
-  return allbookmarks;
- }
+  void deleteBookmark(int id) async {
+    Database db = await database.db;
+    await db.delete("bookmark", where: "id = $id");
+    update();
+    // Get.snackbar("Berhasil", "Telah berhasil menghapus bookmark");
+  }
+  Future<List<Map<String, dynamic>>> getBookmark() async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> allbookmarks = await db.query(
+      "bookmark",
+      where: "last_read = 0",
+    );
+    return allbookmarks;
+  }
 
   void changeThemeMode() async {
     Get.isDarkMode ? Get.changeTheme(themeLight) : Get.changeTheme(themeDark);
@@ -33,10 +48,10 @@ class HomeController extends GetxController {
 
     final box = GetStorage();
 
-    if(Get.isDarkMode) {
+    if (Get.isDarkMode) {
       box.remove("themeDark");
     } else {
-          box.write("themeDark", true);
+      box.write("themeDark", true);
     }
   }
 

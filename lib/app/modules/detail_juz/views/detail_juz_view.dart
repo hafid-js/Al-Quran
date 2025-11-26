@@ -132,10 +132,6 @@ class DetailJuzView extends StatelessWidget {
                                   },
                                   icon: Icon(Icons.bookmark_add_outlined),
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.bookmark_add_outlined),
-                                ),
                                 (surah.kondisiAudio == "stop")
                                     ? IconButton(
                                         onPressed: () {
