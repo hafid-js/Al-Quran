@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:alquran/app/data/db/bookmark.dart';
 import 'package:alquran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:alquran/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran/app/data/models/juz.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sqflite/sqlite_api.dart';
 
  class AyatFull {
   final detail.Ayat ayat;
@@ -28,6 +30,62 @@ class DetailJuzController extends GetxController {
   AyatFull? lastAyat;
 
   RxBool isDark = Get.isDarkMode.obs;
+
+  DatabaseManager database = DatabaseManager.instance;
+
+  void addBookmark(
+    bool lastRead,
+    String surah,
+    AyatFull ayat,
+    int indexAyat,
+  ) async {
+    Database db = await database.db;
+
+    bool flagExist = false;
+
+    if (lastRead == true) {
+      await db.delete("bookmark", where: "last_read = 1");
+    } else {
+      List checkData = await db.query(
+        "bookmark",
+        where:
+            "surah = ? AND ayat = ? AND via = ? AND index_ayat = ? AND last_read = 0",
+        whereArgs: [surah, ayat.ayat.nomorAyat, "surah", indexAyat],
+      );
+
+      if (checkData.isNotEmpty) {
+        flagExist = true;
+      }
+    }
+
+    if (flagExist == false) {
+      await db.insert("bookmark", {
+        "surah": ayat.surahLatinName,
+        "ayat": ayat.ayat.nomorAyat,
+        // "juz": juzNumber,
+        "via": "juz",
+        "index_ayat": indexAyat,
+        "last_read": lastRead == true ? 1 : 0,
+      });
+
+      Get.back();
+
+      // Get.snackbar(
+      //   "Berhasil",
+      //   "Berhasil menambahkan bookmark",
+      //   colorText: appWhite,
+      // );
+    } else {
+      // Get.snackbar(
+      //   "Terjadi Kesalahan",
+      //   "Bookmark telah tersedia",
+      //   colorText: appWhite,
+      // );
+    }
+
+    var data = await db.query("bookmark");
+    print(data);
+  }
 
 
 Future<List<AyatFull>> getAyatFromJuz(int juzNumber) async {

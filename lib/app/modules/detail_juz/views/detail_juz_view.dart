@@ -22,7 +22,7 @@ class DetailJuzView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Juz $juzNumber', style: TextStyle(color: appWhite)),
+        title: Text('Juz $juzNumber', style: TextStyle(color: Get.isDarkMode? appPurpleDark : appWhite)),
         centerTitle: true,
       ),
       body: FutureBuilder<List<AyatFull>>(
@@ -83,6 +83,55 @@ class DetailJuzView extends StatelessWidget {
                           GetBuilder<DetailJuzController>(
                             builder: (c) => Row(
                               children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Get.defaultDialog(
+                                      title: "BOOKMARK",
+                                      middleText: "Pilih Jenis Bookmark",
+                                      middleTextStyle: TextStyle(color: Colors.black),
+                                      titleStyle: TextStyle(fontWeight: FontWeight.w400),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            c.addBookmark(true, ayat.surahLatinName, ayat, index);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: appPurple,
+                                            foregroundColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 12,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text("LAST READ"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                              c.addBookmark(false, ayat.surahLatinName, ayat, index);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: appPurple,
+                                            foregroundColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 12,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text("BOOKMARK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  icon: Icon(Icons.bookmark_add_outlined),
+                                ),
                                 IconButton(
                                   onPressed: () {},
                                   icon: Icon(Icons.bookmark_add_outlined),
