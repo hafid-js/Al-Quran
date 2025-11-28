@@ -49,8 +49,9 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
               ),
-              FutureBuilder<Map<String, dynamic>?>(
-                future: controller.getLastRead(),
+              GetBuilder<HomeController>(builder: (c) =>
+                FutureBuilder<Map<String, dynamic>?>(
+                future: c.getLastRead(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -135,7 +136,7 @@ class HomeView extends GetView<HomeController> {
                             actions: [
                               OutlinedButton(onPressed: () => Get.back(), child: Text('CANCEL'),),
                                ElevatedButton(onPressed: () {
-                                controller.deleteBookmark(lastRead['id']);
+                                c.deleteBookmark(lastRead['id']);
                                }, child: Text('DELETE'),)
                             ]
                           );
@@ -197,7 +198,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   );
                 },
-              ),
+              ),),
               TabBar(
                 indicatorColor: appPurpleDark,
                 unselectedLabelColor: Colors.grey,

@@ -2,6 +2,7 @@ import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran/app/data/models/surah.dart';
 import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
+import 'package:alquran/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../controllers/detail_surah_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {
   final Surah surah = Get.arguments;
+  final homeC = Get.find<HomeController>();
 
   DetailJuzController juzC = DetailJuzController();
 
@@ -229,8 +231,9 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                       titleStyle: TextStyle(fontWeight: FontWeight.w400),
                                       actions: [
                                         ElevatedButton(
-                                          onPressed: () {
-                                            c.addBookmark(true, snapshot.data!, ayat, index);
+                                          onPressed: () async {
+                                            await c.addBookmark(true, snapshot.data!, ayat, index);
+                                            homeC.update();
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,

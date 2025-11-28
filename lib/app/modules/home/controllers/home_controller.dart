@@ -30,6 +30,7 @@ class HomeController extends GetxController {
   void deleteBookmark(int id) async {
     Database db = await database.db;
     await db.delete("bookmark", where: "id = $id");
+    Get.back();
     update();
     // Get.snackbar("Berhasil", "Telah berhasil menghapus bookmark");
   }

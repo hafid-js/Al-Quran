@@ -13,7 +13,7 @@ class DetailSurahController extends GetxController {
 
   DatabaseManager database = DatabaseManager.instance;
 
-  void addBookmark(
+  Future<void> addBookmark(
     bool lastRead,
     DetailSurah surah,
     Ayat ayat,

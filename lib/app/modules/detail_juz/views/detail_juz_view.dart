@@ -1,8 +1,8 @@
 import 'package:alquran/app/contants/color.dart';
 import 'package:alquran/app/data/models/detail_surah.dart';
-import 'package:alquran/app/data/models/juz.dart';
 import 'package:alquran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:alquran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
+import 'package:alquran/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,6 +17,8 @@ class DetailJuzBinding extends Bindings {
 class DetailJuzView extends StatelessWidget {
   final int juzNumber = Get.arguments;
   final controller = Get.put(DetailJuzController());
+
+  final homeC = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +94,9 @@ class DetailJuzView extends StatelessWidget {
                                       titleStyle: TextStyle(fontWeight: FontWeight.w400),
                                       actions: [
                                         ElevatedButton(
-                                          onPressed: () {
-                                            c.addBookmark(true, ayat.surahLatinName, ayat, index);
+                                          onPressed: () async {
+                                            await c.addBookmark(true, ayat.surahLatinName, ayat, index);
+                                            homeC.update();
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: appPurple,
